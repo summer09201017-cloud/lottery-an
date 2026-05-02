@@ -19,6 +19,9 @@ export default defineConfig({
         short_name: '抽獎機',
         description: '跑馬燈抽獎機',
         theme_color: '#030712',
+        background_color: '#030712',
+        display: 'standalone',
+        start_url: '/',
         icons: [
           {
             src: 'pwa-192x192.png',
