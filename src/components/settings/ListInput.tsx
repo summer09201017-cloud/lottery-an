@@ -9,9 +9,12 @@ import {
   FileText,
   Pencil,
   QrCode,
+  Image as ImageIcon,
+  Images,
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import QRCode from 'qrcode';
+import { compressImage } from '../../hooks/useImageHelper';
 
 interface ParsedLine {
   name: string;
@@ -54,7 +57,11 @@ export function ListInput() {
   const [editingWeight, setEditingWeight] = useState('1');
   const [qrUrl, setQrUrl] = useState<string | null>(null);
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
+  const [pickingImageFor, setPickingImageFor] = useState<string | null>(null);
+  const [bulkImporting, setBulkImporting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const bulkImageInputRef = useRef<HTMLInputElement>(null);
 
   const openBulk = () => {
     setBulkText(
@@ -144,6 +151,52 @@ export function ListInput() {
     URL.revokeObjectURL(url);
   };
 
+  const handleImageForItem = async (itemId: string, file: File) => {
+    try {
+      const dataUrl = await compressImage(file, 256, 0.85);
+      setItems(items.map((i) => (i.id === itemId ? { ...i, imageUrl: dataUrl } : i)));
+    } catch (e) {
+      console.error(e);
+      alert('圖片處理失敗');
+    }
+  };
+
+  const removeImage = (itemId: string) => {
+    setItems(
+      items.map((i) => {
+        if (i.id !== itemId) return i;
+        const { imageUrl, ...rest } = i;
+        void imageUrl;
+        return rest;
+      })
+    );
+  };
+
+  const handleBulkImageImport = async (files: FileList) => {
+    setBulkImporting(true);
+    try {
+      const arr = Array.from(files);
+      const newItems = await Promise.all(
+        arr.map(async (f) => {
+          const dataUrl = await compressImage(f, 256, 0.85);
+          const baseName = f.name.replace(/\.[^.]+$/, '');
+          return {
+            id: crypto.randomUUID(),
+            name: baseName || '未命名',
+            weight: 1,
+            imageUrl: dataUrl,
+          };
+        })
+      );
+      setItems([...items, ...newItems]);
+    } catch (e) {
+      console.error(e);
+      alert('部分圖片處理失敗');
+    } finally {
+      setBulkImporting(false);
+    }
+  };
+
   const handleShare = async () => {
     if (items.length === 0) return;
     try {
@@ -208,6 +261,14 @@ export function ListInput() {
             <Upload className="w-3 h-3" /> 匯入
           </button>
           <button
+            onClick={() => bulkImageInputRef.current?.click()}
+            disabled={bulkImporting}
+            className="text-xs text-gray-300 hover:text-white px-2 py-1 rounded hover:bg-gray-800 flex items-center gap-1 disabled:opacity-30"
+            title="批次匯入照片（檔名為名稱）"
+          >
+            <Images className="w-3 h-3" /> {bulkImporting ? '處理中…' : '照片'}
+          </button>
+          <button
             onClick={handleCsvExport}
             disabled={items.length === 0}
             className="text-xs text-gray-300 hover:text-white px-2 py-1 rounded hover:bg-gray-800 flex items-center gap-1 disabled:opacity-30"
@@ -234,6 +295,30 @@ export function ListInput() {
         onChange={(e) => {
           const f = e.target.files?.[0];
           if (f) handleCsvImport(f);
+          e.target.value = '';
+        }}
+      />
+      <input
+        ref={bulkImageInputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        className="hidden"
+        onChange={(e) => {
+          const fs = e.target.files;
+          if (fs && fs.length > 0) handleBulkImageImport(fs);
+          e.target.value = '';
+        }}
+      />
+      <input
+        ref={imageInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          if (f && pickingImageFor) handleImageForItem(pickingImageFor, f);
+          setPickingImageFor(null);
           e.target.value = '';
         }}
       />
@@ -289,16 +374,44 @@ export function ListInput() {
               <div
                 key={item.id}
                 className={clsx(
-                  'group flex items-center gap-1 rounded-full pl-2.5 pr-1 py-1 text-xs border',
+                  'group flex items-center gap-1 rounded-full py-1 text-xs border',
+                  item.imageUrl ? 'pl-1' : 'pl-2.5',
+                  'pr-1',
                   item.weight > 1
                     ? 'bg-amber-900/40 border-amber-600 text-amber-100'
                     : 'bg-gray-700 border-gray-600 text-gray-100'
                 )}
               >
-                <span className="font-medium">{item.name}</span>
+                {item.imageUrl && (
+                  <img
+                    src={item.imageUrl}
+                    alt={item.name}
+                    className="w-6 h-6 rounded-full object-cover border border-gray-600"
+                  />
+                )}
+                <span className="font-medium max-w-[90px] truncate">{item.name}</span>
                 {item.weight !== 1 && (
                   <span className="text-[10px] text-amber-300 font-bold">×{item.weight}</span>
                 )}
+                <button
+                  onClick={() => {
+                    if (item.imageUrl) {
+                      removeImage(item.id);
+                    } else {
+                      setPickingImageFor(item.id);
+                      setTimeout(() => imageInputRef.current?.click(), 0);
+                    }
+                  }}
+                  className={clsx(
+                    'p-0.5',
+                    item.imageUrl
+                      ? 'text-pink-300 hover:text-red-300'
+                      : 'opacity-50 hover:opacity-100'
+                  )}
+                  title={item.imageUrl ? '移除圖片' : '加入圖片'}
+                >
+                  <ImageIcon className="w-3 h-3" />
+                </button>
                 <button
                   onClick={() => startEdit(item.id)}
                   className="opacity-50 hover:opacity-100 p-0.5"
@@ -319,8 +432,9 @@ export function ListInput() {
         )}
       </div>
 
-      <div className="flex justify-between text-xs text-gray-500">
+      <div className="flex flex-col gap-0.5 text-xs text-gray-500">
         <span>📌 名字後加 ,數字 設權重；再加 ,文字 設群組</span>
+        <span>📷 點 chip 上的相片圖示加入照片；或按上方「照片」批次匯入（檔名為名稱）</span>
       </div>
 
       {qrDataUrl && qrUrl && (

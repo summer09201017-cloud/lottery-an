@@ -130,7 +130,7 @@ export function MarqueeMode() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
                     className={cn(
-                      'relative flex items-center justify-center h-20 sm:h-24 p-2 rounded-lg text-center transition-all duration-100',
+                      'relative flex flex-col items-center justify-center h-24 sm:h-28 p-2 rounded-lg text-center transition-all duration-100 overflow-hidden',
                       isActive
                         ? 'bg-indigo-600 shadow-[0_0_20px_rgba(79,70,229,0.8)] scale-105 z-10'
                         : 'bg-gray-800',
@@ -140,10 +140,22 @@ export function MarqueeMode() {
                       !isActive && !isWinner && 'opacity-80'
                     )}
                   >
+                    {item.imageUrl && (
+                      <img
+                        src={item.imageUrl}
+                        alt={item.name}
+                        className={cn(
+                          'rounded-md object-cover mb-1 border',
+                          isActive || isWinner
+                            ? 'w-12 h-12 border-white/60'
+                            : 'w-10 h-10 border-gray-700'
+                        )}
+                      />
+                    )}
                     <span
                       className={cn(
-                        'font-bold truncate w-full px-2',
-                        isActive || isWinner ? 'text-white text-lg' : 'text-gray-300'
+                        'font-bold truncate w-full px-1',
+                        isActive || isWinner ? 'text-white text-base' : 'text-gray-300 text-sm'
                       )}
                     >
                       {item.name}
@@ -200,8 +212,15 @@ export function MarqueeMode() {
                     key={w.id + i}
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="px-3 py-1 bg-emerald-700/60 border border-emerald-500 rounded-full text-white font-medium"
+                    className="flex items-center gap-1.5 pl-1 pr-3 py-1 bg-emerald-700/60 border border-emerald-500 rounded-full text-white font-medium"
                   >
+                    {w.imageUrl && (
+                      <img
+                        src={w.imageUrl}
+                        alt={w.name}
+                        className="w-6 h-6 rounded-full object-cover border border-white/40"
+                      />
+                    )}
                     {w.name}
                   </motion.span>
                 ))}

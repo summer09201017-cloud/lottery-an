@@ -194,10 +194,17 @@ export function SlotMode() {
                   {slotItems.map((item, i) => (
                     <div
                       key={`${item.id}-${colIndex}-${i}`}
-                      className="flex items-center justify-center w-full font-bold text-xl sm:text-2xl lg:text-3xl border-b border-gray-800/30 text-gray-200 px-2 truncate"
+                      className="flex items-center justify-center w-full font-bold border-b border-gray-800/30 text-gray-200 px-2 gap-2"
                       style={{ height: `${ITEM_HEIGHT}px` }}
                     >
-                      {item.name}
+                      {item.imageUrl && (
+                        <img
+                          src={item.imageUrl}
+                          alt={item.name}
+                          className="w-12 h-12 rounded-lg object-cover border border-gray-700 flex-shrink-0"
+                        />
+                      )}
+                      <span className="text-lg sm:text-xl lg:text-2xl truncate">{item.name}</span>
                     </div>
                   ))}
                 </motion.div>

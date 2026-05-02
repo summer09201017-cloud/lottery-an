@@ -198,7 +198,7 @@ export function GachaMode() {
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full gap-8 p-4 z-10 relative">
-      {items.length === 0 ? (
+      {!drawMode && items.length === 0 ? (
         <div className="flex items-center justify-center h-64 text-gray-400 bg-gray-900/80 backdrop-blur-md border border-gray-700 rounded-xl w-full max-w-2xl">
           請先在左側輸入抽獎名單
         </div>
@@ -268,7 +268,7 @@ export function GachaMode() {
                   {singleResult && (
                     <div
                       className={clsx(
-                        'absolute inset-0 w-full h-full rounded-2xl [backface-visibility:hidden] border-4 flex flex-col items-center justify-center p-6 text-center shadow-2xl',
+                        'absolute inset-0 w-full h-full rounded-2xl [backface-visibility:hidden] border-4 flex flex-col items-center justify-center p-6 text-center shadow-2xl overflow-hidden',
                         getRarityStyle(getRarity(singleResult.weight)).border
                       )}
                       style={{
@@ -278,12 +278,19 @@ export function GachaMode() {
                     >
                       <div
                         className={clsx(
-                          'text-sm font-bold tracking-widest uppercase mb-6',
+                          'text-sm font-bold tracking-widest uppercase mb-4',
                           getRarityStyle(getRarity(singleResult.weight)).text
                         )}
                       >
                         {getRarityStyle(getRarity(singleResult.weight)).label}
                       </div>
+                      {singleResult.imageUrl && (
+                        <img
+                          src={singleResult.imageUrl}
+                          alt={singleResult.name}
+                          className="w-40 h-40 rounded-2xl object-cover mb-4 border-2 border-white/40 shadow-xl"
+                        />
+                      )}
                       <div className="text-4xl font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] break-all leading-tight">
                         {singleResult.name}
                       </div>
@@ -332,7 +339,7 @@ export function GachaMode() {
                         </div>
                         <div
                           className={clsx(
-                            'absolute inset-0 w-full h-full rounded-xl [backface-visibility:hidden] border-2 flex flex-col items-center justify-center p-3 text-center',
+                            'absolute inset-0 w-full h-full rounded-xl [backface-visibility:hidden] border-2 flex flex-col items-center justify-center p-2 text-center overflow-hidden',
                             style.border,
                             isFlipped ? style.shadow : ''
                           )}
@@ -343,13 +350,20 @@ export function GachaMode() {
                         >
                           <div
                             className={clsx(
-                              'text-[10px] font-bold tracking-wider mb-2',
+                              'text-[10px] font-bold tracking-wider mb-1',
                               style.text
                             )}
                           >
                             {style.label}
                           </div>
-                          <div className="text-xl font-black text-white drop-shadow-md break-all leading-tight line-clamp-4">
+                          {item.imageUrl && (
+                            <img
+                              src={item.imageUrl}
+                              alt={item.name}
+                              className="w-16 h-16 rounded-lg object-cover mb-1.5 border border-white/40"
+                            />
+                          )}
+                          <div className="text-base font-black text-white drop-shadow-md break-all leading-tight line-clamp-3">
                             {item.name}
                           </div>
                         </div>

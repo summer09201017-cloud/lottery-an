@@ -3,6 +3,7 @@ export interface LotteryItem {
   name: string;
   weight: number;
   group?: string;
+  imageUrl?: string;
 }
 
 export interface DrawOptions {
