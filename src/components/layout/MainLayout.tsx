@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { useAppStore } from '../../store/useAppStore';
 import { Settings, Volume2, VolumeX, Shuffle, RotateCcw, LayoutGrid, CircleDashed, AlignEndHorizontal, Image as ImageIcon } from 'lucide-react';
 import { ListInput } from '../settings/ListInput';
+import { InstallPWA } from '../settings/InstallPWA';
 import { ThemeBackground } from './ThemeBackground';
 import { clsx } from 'clsx';
 
@@ -85,6 +86,9 @@ export function MainLayout({ children }: MainLayoutProps) {
                 ))}
               </div>
             </div>
+
+            {/* Install PWA Button */}
+            <InstallPWA />
           </div>
 
           {/* History */}
