@@ -16,7 +16,7 @@ const Sakura = () => {
     );
   }, []);
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
       <div className="absolute inset-0 bg-gradient-to-br from-pink-900/30 to-slate-900" />
       {petals.map((petal) => (
         <motion.div
@@ -82,7 +82,7 @@ const Christmas = () => {
     );
   }, []);
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
       <div className="absolute inset-0 bg-gradient-to-b from-emerald-950 via-slate-900 to-red-950" />
       {/* Aurora glow */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-red-500/10 rounded-full blur-[100px]" />
@@ -116,7 +116,7 @@ const NewYear = () => {
     );
   }, []);
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
       <div className="absolute inset-0 bg-gradient-to-br from-red-950 via-rose-950 to-amber-950" />
       <div className="absolute inset-0 opacity-10" style={{
         backgroundImage: 'radial-gradient(circle at 50% 50%, #fbbf24 1px, transparent 1px)',
@@ -162,7 +162,7 @@ const Halloween = () => {
     );
   }, []);
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
       <div className="absolute inset-0 bg-gradient-to-b from-purple-950 via-slate-950 to-black" />
       {/* Moon */}
       <div className="absolute top-12 right-12 w-32 h-32 bg-amber-100 rounded-full blur-sm shadow-[0_0_60px_rgba(251,191,36,0.6)]" />
