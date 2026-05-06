@@ -17,11 +17,11 @@ const Sakura = () => {
   }, []);
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-      <div className="absolute inset-0 bg-gradient-to-br from-pink-900/30 to-slate-900" />
+      <div className="absolute inset-0 bg-gradient-to-br from-pink-100 via-rose-50 to-white" />
       {petals.map((petal) => (
         <motion.div
           key={petal.id}
-          className="absolute top-[-10%] w-3 h-4 bg-pink-300/60 rounded-tl-full rounded-br-full"
+          className="absolute top-[-10%] w-3 h-4 bg-pink-400/80 rounded-tl-full rounded-br-full"
           animate={{ y: ['0vh', '110vh'], x: [0, Math.random() * 100 - 50, Math.random() * 100 - 50], rotate: [0, 360] }}
           transition={{ duration: petal.duration, delay: petal.delay, repeat: Infinity, ease: 'linear' }}
           style={{ left: `${petal.left}%` }}
@@ -32,7 +32,7 @@ const Sakura = () => {
 };
 
 const Casino = () => (
-  <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 bg-[#0f3b20]">
+  <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 bg-[#0f3b20]">
     <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle, #1a5732 2px, transparent 2px)', backgroundSize: '12px 12px' }} />
     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-[#0f3b20]/50 to-black" />
     <div className="absolute top-[10%] left-[10%] text-white/5"><Spade size={120} /></div>
@@ -43,7 +43,7 @@ const Casino = () => (
 );
 
 const Temple = () => (
-  <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 bg-red-950">
+  <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 bg-red-950">
     <div className="absolute inset-0 bg-gradient-to-b from-red-900 to-black opacity-80" />
     <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'repeating-radial-gradient(circle at 0 0, transparent 0, #fbbf24 10px, transparent 11px)', backgroundSize: '100px 100px' }} />
     <motion.div className="absolute top-0 left-[20%] w-64 h-64 bg-orange-500/30 rounded-full blur-[80px]"
@@ -54,7 +54,7 @@ const Temple = () => (
 );
 
 const Party = () => (
-  <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 bg-slate-950">
+  <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 bg-slate-950">
     <div className="absolute inset-0 opacity-20" style={{
       backgroundImage: 'linear-gradient(to right, #4f46e5 1px, transparent 1px), linear-gradient(to bottom, #4f46e5 1px, transparent 1px)',
       backgroundSize: '40px 40px',
@@ -83,14 +83,14 @@ const Christmas = () => {
   }, []);
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-      <div className="absolute inset-0 bg-gradient-to-b from-emerald-950 via-slate-900 to-red-950" />
+      <div className="absolute inset-0 bg-gradient-to-b from-sky-100 via-white to-emerald-50" />
       {/* Aurora glow */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-red-500/10 rounded-full blur-[100px]" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-400/10 rounded-full blur-[100px]" />
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-red-300/40 rounded-full blur-[100px]" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-300/40 rounded-full blur-[100px]" />
       {snow.map((s) => (
         <motion.div
           key={s.id}
-          className="absolute top-[-5%] rounded-full bg-white/80"
+          className="absolute top-[-5%] rounded-full bg-sky-300/80 shadow-[0_0_4px_rgba(255,255,255,0.8)]"
           style={{ left: `${s.left}%`, width: s.size, height: s.size }}
           animate={{ y: ['0vh', '110vh'], x: [0, 30, -30, 20, 0] }}
           transition={{ duration: s.duration, delay: s.delay, repeat: Infinity, ease: 'linear' }}

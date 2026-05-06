@@ -15,23 +15,38 @@ export default defineConfig({
         skipWaiting: true,
       },
       manifest: {
+        id: '/',
+        scope: '/',
         name: '隨機抽獎機',
         short_name: '抽獎機',
-        description: '跑馬燈抽獎機',
+        description: '跑馬燈抽獎機 — 多種模式、真隨機、可離線安裝',
+        lang: 'zh-TW',
+        dir: 'ltr',
         theme_color: '#030712',
         background_color: '#030712',
         display: 'standalone',
+        display_override: ['standalone', 'minimal-ui'],
+        orientation: 'any',
         start_url: '/',
+        categories: ['utilities', 'entertainment'],
         icons: [
           {
             src: 'pwa-192x192.png',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/png',
+            purpose: 'any'
           },
           {
             src: 'pwa-512x512.png',
             sizes: '512x512',
-            type: 'image/png'
+            type: 'image/png',
+            purpose: 'any'
+          },
+          {
+            src: 'pwa-maskable.svg',
+            sizes: 'any',
+            type: 'image/svg+xml',
+            purpose: 'maskable'
           }
         ]
       }

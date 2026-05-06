@@ -56,7 +56,7 @@ export function MainLayout({ children }: MainLayoutProps) {
       {/* Sidebar / Settings Area */}
       <aside
         className={clsx(
-          'flex-shrink-0 bg-gray-900 border-r border-gray-800 flex flex-col h-screen overflow-y-auto transition-all duration-300',
+          'relative z-20 flex-shrink-0 bg-gray-900 border-r border-gray-800 flex flex-col h-screen overflow-y-auto transition-all duration-300',
           sidebarHidden ? 'w-0 md:w-0 overflow-hidden' : 'w-full md:w-80 lg:w-96'
         )}
       >
