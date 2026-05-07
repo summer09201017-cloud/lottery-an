@@ -12,6 +12,8 @@ import {
   Image as ImageIcon,
   PanelLeftClose,
   PanelLeftOpen,
+  Menu,
+  X,
 } from 'lucide-react';
 import { ListInput } from '../settings/ListInput';
 import { InstallPWA } from '../settings/InstallPWA';
@@ -52,12 +54,35 @@ export function MainLayout({ children }: MainLayoutProps) {
   const [sidebarHidden, setSidebarHidden] = useState(false);
 
   return (
-    <div className="flex flex-col md:flex-row w-full min-h-screen bg-gray-950 text-white font-sans overflow-hidden">
-      {/* Sidebar / Settings Area */}
+    <div className="flex flex-col md:flex-row w-full h-screen bg-gray-950 text-white font-sans overflow-hidden relative">
+      {/* Theme background — fixed at root so it's visible on both mobile and desktop, behind everything */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <ThemeBackground />
+      </div>
+
+      {/* Mobile drawer backdrop — tap to close */}
+      {!sidebarHidden && (
+        <button
+          type="button"
+          aria-label="關閉設定面板"
+          onClick={() => setSidebarHidden(true)}
+          className="md:hidden fixed inset-0 z-30 bg-black/50 backdrop-blur-sm"
+        />
+      )}
+
+      {/* Sidebar / Settings Area
+          Mobile: fixed slide-in drawer overlay
+          Desktop: in-flow sidebar (relative) */}
       <aside
         className={clsx(
-          'relative z-20 flex-shrink-0 bg-gray-900 border-r border-gray-800 flex flex-col h-screen overflow-y-auto transition-all duration-300',
-          sidebarHidden ? 'w-0 md:w-0 overflow-hidden' : 'w-full md:w-80 lg:w-96'
+          'bg-gray-900 border-r border-gray-800 flex flex-col overflow-y-auto transition-all duration-300',
+          // Mobile drawer
+          'fixed inset-y-0 left-0 z-40 w-full max-w-md shadow-2xl',
+          // Desktop sidebar
+          'md:relative md:z-20 md:flex-shrink-0 md:max-w-none md:h-screen md:shadow-none',
+          sidebarHidden
+            ? '-translate-x-full md:translate-x-0 md:w-0 md:overflow-hidden'
+            : 'translate-x-0 md:w-80 lg:w-96'
         )}
       >
         <div className="p-6 pb-2 border-b border-gray-800 flex items-center justify-between">
@@ -65,6 +90,14 @@ export function MainLayout({ children }: MainLayoutProps) {
             <Shuffle className="text-indigo-400" />
             隨機抽獎機
           </h1>
+          {/* Mobile close button — desktop hides this since the toggle in main is enough */}
+          <button
+            onClick={() => setSidebarHidden(true)}
+            className="md:hidden p-2 -mr-2 rounded-lg hover:bg-gray-800 text-gray-400 hover:text-white transition-colors"
+            aria-label="關閉"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
         <div className="flex-1 p-6 flex flex-col gap-6">
@@ -184,10 +217,19 @@ export function MainLayout({ children }: MainLayoutProps) {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col relative h-screen z-10 bg-transparent">
-        <ThemeBackground />
+      <main className="flex-1 flex flex-col relative h-screen z-10 bg-transparent w-full">
+        {/* Mobile menu open button — only shows when drawer is closed */}
+        {sidebarHidden && (
+          <button
+            onClick={() => setSidebarHidden(false)}
+            className="md:hidden absolute top-4 left-4 z-30 p-2 bg-gray-900/80 backdrop-blur-md border border-gray-800 rounded-lg hover:bg-gray-800 transition-colors"
+            aria-label="開啟設定面板"
+          >
+            <Menu className="w-5 h-5 text-gray-300" />
+          </button>
+        )}
 
-        {/* Sidebar toggle */}
+        {/* Desktop sidebar toggle */}
         <button
           onClick={() => setSidebarHidden(!sidebarHidden)}
           className="absolute top-4 left-4 z-50 p-2 bg-gray-900/80 backdrop-blur-md border border-gray-800 rounded-lg hover:bg-gray-800 transition-colors hidden md:flex"
