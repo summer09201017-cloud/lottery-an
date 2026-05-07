@@ -31,12 +31,11 @@ if not exist node_modules (
 )
 
 echo 啟動 dev server...
-echo 瀏覽器會自動開啟，按 Ctrl+C 可結束。
+echo 瀏覽器會在 server 就緒後自動開啟，按 Ctrl+C 可結束。
 echo 想用同網段手機測試：把網址中的 localhost 換成電腦的 IP。
 echo.
 
-start "" http://localhost:5173/
-call npm run dev
+call npm run dev -- --open --host
 
 echo.
 echo 伺服器已關閉。

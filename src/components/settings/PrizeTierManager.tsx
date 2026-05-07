@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAppStore, TIER_PALETTE } from '../../store/useAppStore';
 import type { PrizeTier } from '../../store/useAppStore';
-import { Trophy, Plus, X, RotateCcw, Check } from 'lucide-react';
+import { Trophy, Plus, X, RotateCcw, Check, Minus } from 'lucide-react';
 import { clsx } from 'clsx';
 
 export function PrizeTierManager() {
@@ -51,21 +51,51 @@ export function PrizeTierManager() {
         <Trophy className="w-4 h-4" /> 獎項分輪
       </label>
 
-      {/* Draw count quick set */}
-      <div className="flex items-center gap-2 p-2 rounded-lg bg-gray-800/60 border border-gray-700">
-        <span className="text-xs text-gray-400">一次抽</span>
-        <input
-          type="number"
-          min={1}
-          max={50}
-          value={settings.drawCount}
-          onChange={(e) =>
-            updateSettings({ drawCount: Math.max(1, Math.min(50, +e.target.value || 1)) })
-          }
-          className="w-14 px-2 py-1 bg-gray-900 border border-gray-700 rounded text-white text-sm text-center"
-        />
-        <span className="text-xs text-gray-400">位</span>
-        <span className="text-xs text-gray-500 ml-auto">不開獎項時生效</span>
+      {/* Draw count quick set: slider + stepper */}
+      <div className="flex flex-col gap-2 p-3 rounded-lg bg-gray-800/60 border border-gray-700">
+        <div className="flex items-center justify-between">
+          <span className="text-xs text-gray-400">
+            一次抽{' '}
+            <span className="text-lg font-bold text-indigo-300 mx-0.5">
+              {settings.drawCount}
+            </span>{' '}
+            位
+          </span>
+          <span className="text-[10px] text-gray-500">不開獎項時生效</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() =>
+              updateSettings({ drawCount: Math.max(1, settings.drawCount - 1) })
+            }
+            disabled={settings.drawCount <= 1}
+            className="w-7 h-7 flex items-center justify-center rounded bg-gray-900 border border-gray-700 hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed text-white flex-shrink-0"
+            aria-label="減少"
+          >
+            <Minus className="w-3.5 h-3.5" />
+          </button>
+          <input
+            type="range"
+            min={1}
+            max={50}
+            value={settings.drawCount}
+            onChange={(e) => updateSettings({ drawCount: +e.target.value })}
+            className="flex-1 accent-indigo-500 cursor-pointer"
+            aria-label="一次抽幾位"
+          />
+          <button
+            type="button"
+            onClick={() =>
+              updateSettings({ drawCount: Math.min(50, settings.drawCount + 1) })
+            }
+            disabled={settings.drawCount >= 50}
+            className="w-7 h-7 flex items-center justify-center rounded bg-gray-900 border border-gray-700 hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed text-white flex-shrink-0"
+            aria-label="增加"
+          >
+            <Plus className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
 
       {prizeTiers.length === 0 ? (
