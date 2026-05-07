@@ -31,11 +31,15 @@ if not exist node_modules (
 )
 
 echo 啟動 dev server...
-echo 瀏覽器會在 server 就緒後自動開啟，按 Ctrl+C 可結束。
-echo 想用同網段手機測試：把網址中的 localhost 換成電腦的 IP。
+echo 約 5 秒後瀏覽器會自動開啟 http://localhost:5173/。按 Ctrl+C 可結束。
+echo 想用同網段手機測試：終端機會印出 Network: 開頭的網址。
 echo.
 
-call npm run dev -- --open --host
+REM 背景排程：等 5 秒後用預設瀏覽器開啟。
+REM 用 PowerShell hidden window，比 vite --open 在中文路徑下更穩定。
+start "" powershell -NoProfile -WindowStyle Hidden -Command "Start-Sleep -Seconds 5; Start-Process 'http://localhost:5173/'"
+
+call npm run dev -- --host
 
 echo.
 echo 伺服器已關閉。
