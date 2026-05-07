@@ -1,0 +1,3 @@
+# Preserve byte-exact content for CP950 (Big5) encoded bat files
+# so cmd.exe on Traditional Chinese Windows can read them correctly.
+*.bat -text
