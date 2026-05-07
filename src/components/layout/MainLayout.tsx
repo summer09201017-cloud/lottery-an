@@ -218,11 +218,12 @@ export function MainLayout({ children }: MainLayoutProps) {
 
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col relative h-screen z-10 bg-transparent w-full">
-        {/* Mobile menu open button — only shows when drawer is closed */}
+        {/* Mobile menu open button — only shows when drawer is closed.
+            z-50 so it sits above the mode selector header (z-40) and stays clickable. */}
         {sidebarHidden && (
           <button
             onClick={() => setSidebarHidden(false)}
-            className="md:hidden absolute top-4 left-4 z-30 p-2 bg-gray-900/80 backdrop-blur-md border border-gray-800 rounded-lg hover:bg-gray-800 transition-colors"
+            className="md:hidden absolute top-4 left-4 z-50 p-2 bg-gray-900/80 backdrop-blur-md border border-gray-800 rounded-lg hover:bg-gray-800 transition-colors"
             aria-label="開啟設定面板"
           >
             <Menu className="w-5 h-5 text-gray-300" />
